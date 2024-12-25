@@ -1,17 +1,22 @@
+""" Файл отвечает за создание форм для модели Post и Comment. 
+Он используется для удобного ввода данных в эти модели через веб-страницу. """
+
 from django import forms
 from django.utils import timezone
 
 from blog.models import Comment, Post
 
-
+""" Форма для создания и редактирования поста.
+Включает поле для даты публикации, которое автоматически устанавливается на текущее время. """
 class PostForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
+        """ Инициализация формы, установка начального значения для поля 'pub_date' на текущее время. """
         super(PostForm, self).__init__(*args, **kwargs)
         self.fields['pub_date'].initial = timezone.now()
 
     class Meta:
-        model = Post
+        model = Post #указываем, что форма связана с моделью Post
         exclude = ('author',)
         widgets = {
             'pub_date': forms.DateTimeInput(attrs={
@@ -20,8 +25,10 @@ class PostForm(forms.ModelForm):
             }),
         }
 
-
+""" Форма для создания комментариев.
+Исключает поля 'author', 'post' и 'is_published' из формы, 
+так как они заполняются автоматически системой. """
 class CommentForm(forms.ModelForm):
     class Meta:
-        model = Comment
+        model = Comment #указываем, что форма связана с моделью Comment
         exclude = ('author', 'post', 'is_published')
