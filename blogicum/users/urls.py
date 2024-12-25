@@ -1,3 +1,6 @@
+""" Настраивает маршруты для приложения users.
+    Добавляет маршрут для регистрации пользователей. """
+
 from django.urls import path
 
 from . import views
