@@ -1,3 +1,7 @@
+""" Файл views.py содержит классы представлений, 
+которые управляют логикой обработки запросов и 
+подготовки данных для отображения в шаблонах. """
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect
@@ -46,12 +50,14 @@ class CommentView(LoginRequiredMixin):
                        kwargs={'post_id': self.kwargs['post_id']})
 
 
+""" отображает главную страницу блога со списком опубликованных постов """
 class IndexListView(ListView):
     template_name = 'blog/index.html'
     paginate_by = NUMBER_OF_POSTS
     queryset = Post.objects.filter_posts_for_publication().count_comments()
 
 
+""" показывает детали одного поста и связанные с ним комментарии """
 class PostDetailView(ListView):
     template_name = 'blog/detail.html'
     paginate_by = NUMBER_OF_POSTS
@@ -81,6 +87,7 @@ class PostDeleteView(PostView, DeleteView):
     pass
 
 
+""" создает новый комментарий """
 class CommentCreateView(CommentView, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -91,6 +98,7 @@ class CommentCreateView(CommentView, CreateView):
         return super().form_valid(form)
 
 
+""" создает новый пост """
 class CreatePostView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
@@ -113,6 +121,7 @@ class CommentDeleteView(CommentView, AuthorView, DeleteView):
     pass
 
 
+""" отображает список постов, относящихся к определенной категории """
 class CategoryDetailView(ListView):
     template_name = 'blog/category.html'
     paginate_by = NUMBER_OF_POSTS
@@ -131,6 +140,7 @@ class CategoryDetailView(ListView):
         return self.get_category().posts.filter_posts_for_publication()
 
 
+""" отображает профиль пользователя и список его постов """
 class ProfileView(ListView):
     template_name = 'blog/profile.html'
     paginate_by = NUMBER_OF_POSTS
@@ -152,6 +162,7 @@ class ProfileView(ListView):
         return context
 
 
+""" позволяет пользователю редактировать свои данные """
 class ProfileEditView(LoginRequiredMixin, UpdateView):
     template_name = 'blog/user.html'
     fields = ('first_name', 'last_name', 'email')
