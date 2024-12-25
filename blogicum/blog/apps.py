@@ -1,3 +1,5 @@
+""" Файл apps.py определяет настройки для приложения blog. """
+
 from django.apps import AppConfig
 
 
