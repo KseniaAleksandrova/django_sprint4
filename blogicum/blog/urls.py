@@ -1,10 +1,13 @@
+""" Файл urls.py определяет маршруты (URL-адреса), 
+которые связывают запросы пользователя с соответствующими представлениями (views). """
+
 from django.urls import path
 
 from . import views
 
 app_name = 'blog'
 
-urlpatterns = [
+urlpatterns = [ #список URL-шаблонов, где каждый маршрут связывает URL с классом представления(views) и присваивает ему имя
     path(
         '',
         views.IndexListView.as_view(),
