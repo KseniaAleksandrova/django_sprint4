@@ -1,8 +1,12 @@
+""" Файл содержит абстрактные базовые модели IsPublished и CreatedAt. """
+
 from django.db import models
 
 
 class IsPublished(models.Model):
-    """Модель статуса публикации."""
+    """Модель статуса публикации.
+    Абстрактная модель, добавляющая логическое поле is_published.
+    Используется для управления видимостью объектов в интерфейсе. """
 
     is_published = models.BooleanField(
         'Опубликовано',
@@ -15,7 +19,8 @@ class IsPublished(models.Model):
 
 
 class CreatedAt(models.Model):
-    """Модель времени создания."""
+    """Модель времени создания.
+    Абстрактная модель, добавляющая поле created_at, используется для отслеживания времени добавления записей. """
 
     created_at = models.DateTimeField(
         'Добавлено',
