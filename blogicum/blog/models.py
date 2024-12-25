@@ -1,3 +1,6 @@
+""" Файл содержит модели данных для приложения блога. 
+Модели используются для хранения информации о публикациях, категориях, местоположениях и комментариях. """
+
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Count
@@ -11,22 +14,23 @@ MAX_LENGTH = 256
 
 User = get_user_model()
 
-
+""" Класс для управления запросами для работы с опубликованными постами. """
 class PublishedQuerySet(models.QuerySet):
 
-    def filter_posts_for_publication(self):
+    def filter_posts_for_publication(self): #возвращает посты, которые соответствуют условиям публикации
         return self.filter(
             pub_date__lte=timezone.now(),
             is_published=True,
             category__is_published=True,
         )
 
-    def count_comments(self):
+    def count_comments(self): #подсчитывает кол-во комментариев для каждого поста
         return self.select_related(
             'category', 'location', 'author'
         ).annotate(comment_count=Count('comments')).order_by('-pub_date')
 
 
+""" Категория постов для группировки публикаций по темам. """
 class Category(CreatedAt, IsPublished):
 
     title = models.CharField('Заголовок', max_length=MAX_LENGTH)
@@ -46,6 +50,7 @@ class Category(CreatedAt, IsPublished):
         return self.title[:LENGTH_STRING]
 
 
+""" Местоположение, связанное с постами. """
 class Location(CreatedAt, IsPublished):
 
     name = models.CharField('Название места', max_length=MAX_LENGTH)
@@ -58,6 +63,7 @@ class Location(CreatedAt, IsPublished):
         return self.name[:LENGTH_STRING]
 
 
+""" Модель публикации пользователя. """
 class Post(CreatedAt, IsPublished):
 
     title = models.CharField('Заголовок', max_length=MAX_LENGTH)
