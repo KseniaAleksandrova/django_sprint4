@@ -1,6 +1,6 @@
 """ Файл содержит абстрактные базовые модели IsPublished и CreatedAt. """
 
-from django.db import models
+from django.db import models # Импортируем модуль models из Django для работы с моделями базы данных
 
 
 class IsPublished(models.Model):
@@ -9,13 +9,13 @@ class IsPublished(models.Model):
     Используется для управления видимостью объектов в интерфейсе. """
 
     is_published = models.BooleanField(
-        'Опубликовано',
-        default=True,
-        help_text='Снимите галочку, чтобы скрыть публикацию.'
+        'Опубликовано', # Человекочитаемое название поля
+        default=True, # Значение по умолчанию - опубликовано
+        help_text='Снимите галочку, чтобы скрыть публикацию.' # Подсказка для пользователя
     )
 
     class Meta:
-        abstract = True
+        abstract = True # Указываем, что эта модель абстрактная и не будет создана как отдельная таблица в БД
 
 
 class CreatedAt(models.Model):
@@ -24,7 +24,7 @@ class CreatedAt(models.Model):
 
     created_at = models.DateTimeField(
         'Добавлено',
-        auto_now_add=True,
+        auto_now_add=True, # Автоматически устанавливает время создания при добавлении записи
     )
 
     class Meta:
