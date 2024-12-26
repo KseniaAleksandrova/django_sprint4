@@ -8,18 +8,18 @@ from blog.models import Comment, Post
 
 """ Форма для создания и редактирования поста.
 Включает поле для даты публикации, которое автоматически устанавливается на текущее время. """
-class PostForm(forms.ModelForm):
+class PostForm(forms.ModelForm): # Определяем класс PostForm, наследующий от ModelForm
 
     def __init__(self, *args, **kwargs):
         """ Инициализация формы, установка начального значения для поля 'pub_date' на текущее время. """
-        super(PostForm, self).__init__(*args, **kwargs)
+        super(PostForm, self).__init__(*args, **kwargs) # Вызываем конструктор родительского класса
         self.fields['pub_date'].initial = timezone.now()
 
     class Meta:
         model = Post #указываем, что форма связана с моделью Post
         exclude = ('author',)
         widgets = {
-            'pub_date': forms.DateTimeInput(attrs={
+            'pub_date': forms.DateTimeInput(attrs={ # Настраиваем виджет для поля 'pub_date'
                 'type': 'datetime-local',
                 'format': '%Y-%m-%dT%H:%M'
             }),
